@@ -92,16 +92,17 @@ function renderTagFilter() {
     <span class="${activeTag === null ? 'active' : ''}" data-tag="">All</span>
     ${tags.map(tag => `<span class="${activeTag === tag ? 'active' : ''}" data-tag="${tag}">${escapeHtml(tag)}</span>`).join('')}
   `;
-
-  tagFilter.querySelectorAll('span').forEach(el => {
-    el.addEventListener('click', function() {
-      const tag = this.getAttribute('data-tag');
-      activeTag = tag === '' ? null : tag;
-      renderTagFilter();
-      renderNotes();
-    });
-  });
 }
+
+// Event delegation for tag clicks
+tagFilter.addEventListener('click', function(e) {
+  if (e.target.tagName === 'SPAN') {
+    const tag = e.target.getAttribute('data-tag');
+    activeTag = tag === '' ? null : tag;
+    renderTagFilter();
+    renderNotes();
+  }
+});
 
 // Render notes
 function renderNotes() {
