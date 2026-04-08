@@ -94,8 +94,9 @@ function renderTagFilter() {
   `;
 
   tagFilter.querySelectorAll('span').forEach(el => {
-    el.addEventListener('click', () => {
-      activeTag = el.dataset.tag || null;
+    el.addEventListener('click', function() {
+      const tag = this.getAttribute('data-tag');
+      activeTag = tag === '' ? null : tag;
       renderTagFilter();
       renderNotes();
     });
