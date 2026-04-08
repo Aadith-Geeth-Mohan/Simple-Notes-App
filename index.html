@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Simple Notes App - Keep<span>.</span></h1>
+    <input type="text" id="search" placeholder="Search notes...">
+  </header>
+
+  <div class="container">
+    <!-- Add Note Section -->
+    <div class="add-note-section">
+      <div class="add-note-header" id="add-header">
+        <span>Take a note...</span>
+      </div>
+      <form class="add-note-form" id="note-form">
+        <input type="text" id="note-title" placeholder="Title" maxlength="100">
+        <div class="form-divider"></div>
+        <textarea id="note-content" placeholder="Note" rows="3" maxlength="1000"></textarea>
+        <div class="form-divider"></div>
+        <div class="form-actions">
+          <div class="tag-input-wrapper">
+            <span>#</span>
+            <input type="text" id="note-tags" placeholder="Tags (comma separated)">
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" id="cancel-btn">Close</button>
+            <button type="submit" class="btn btn-primary" id="submit-btn">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Message -->
+    <div class="message" id="message"></div>
+
+    <!-- Tag Filter -->
+    <div class="tag-filter" id="tag-filter"></div>
+
+    <!-- Pinned Notes -->
+    <div id="pinned-section" style="display: none;">
+      <div class="section-label">Pinned</div>
+      <div id="pinned-container"></div>
+    </div>
+
+    <!-- All Notes -->
+    <div class="section-label" id="others-label" style="display: none;">Others</div>
+    <div id="notes-container"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
