@@ -206,7 +206,6 @@ header h1 span {
 }
 
 /* Notes Grid */
-#pinned-container,
 #notes-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -228,29 +227,6 @@ header h1 span {
 .note-card:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   transform: translateY(-2px);
-}
-
-.note-card.pinned {
-  border-top: 3px solid #fbbc04;
-}
-
-.note-card .pin-icon {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 14px;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-}
-
-.note-card .pin-icon:hover {
-  opacity: 1;
-}
-
-.note-card.pinned .pin-icon {
-  opacity: 1;
-  color: #fbbc04;
 }
 
 .note-title {

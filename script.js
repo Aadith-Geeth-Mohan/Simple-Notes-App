@@ -10,8 +10,6 @@ const tagsInput = document.getElementById('note-tags');
 const cancelBtn = document.getElementById('cancel-btn');
 const submitBtn = document.getElementById('submit-btn');
 const notesContainer = document.getElementById('notes-container');
-const pinnedContainer = document.getElementById('pinned-container');
-const pinnedSection = document.getElementById('pinned-section');
 const searchInput = document.getElementById('search');
 const tagFilter = document.getElementById('tag-filter');
 const messageEl = document.getElementById('message');
@@ -19,7 +17,6 @@ const messageEl = document.getElementById('message');
 let notes = [];
 let editingId = null;
 let activeTag = null;
-let isFormOpen = false;
 
 // Load from localStorage
 function loadNotes() {
@@ -70,16 +67,6 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Toggle pin
-window.togglePin = function(id) {
-  const note = notes.find(n => n.id === id);
-  if (note) {
-    note.pinned = !note.pinned;
-    saveNotes();
-    renderNotes();
-  }
-};
-
 // Render tag filter
 function renderTagFilter() {
   const tags = getAllTags();
@@ -122,48 +109,26 @@ function renderNotes() {
     filtered = filtered.filter(note => note.tags.includes(activeTag));
   }
 
-  // Separate pinned and unpinned
-  const pinnedNotes = filtered.filter(n => n.pinned);
-  const unpinnedNotes = filtered.filter(n => !n.pinned);
+  // Sort by newest first
+  filtered.sort((a, b) => b.createdAt - a.createdAt);
 
-  // Sort: pinned first, then by newest
-  const sortByDate = (a, b) => b.createdAt - a.createdAt;
-  pinnedNotes.sort(sortByDate);
-  unpinnedNotes.sort(sortByDate);
-
-  // Render pinned
-  if (pinnedNotes.length) {
-    pinnedSection.style.display = 'block';
-    pinnedContainer.innerHTML = pinnedNotes.map(note => createNoteCard(note)).join('');
+  // Render notes
+  if (filtered.length) {
+    notesContainer.innerHTML = filtered.map(note => createNoteCard(note)).join('');
   } else {
-    pinnedSection.style.display = 'none';
-  }
-
-  // Render unpinned
-  const othersLabel = document.getElementById('others-label');
-  if (unpinnedNotes.length) {
-    othersLabel.style.display = 'block';
-    notesContainer.innerHTML = unpinnedNotes.map(note => createNoteCard(note)).join('');
-  } else {
-    othersLabel.style.display = 'none';
-    if (!pinnedNotes.length) {
-      notesContainer.innerHTML = `
-        <div class="empty-state">
-          <div class="icon">📝</div>
-          <p>No notes yet. Click "Take a note..." to create one!</p>
-        </div>
-      `;
-    }
+    notesContainer.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">📝</div>
+        <p>No notes yet. Click "Take a note..." to create one!</p>
+      </div>
+    `;
   }
 }
 
 // Create note card HTML
 function createNoteCard(note) {
   return `
-    <div class="note-card ${note.pinned ? 'pinned' : ''}">
-      <div class="pin-icon" onclick="togglePin(${note.id})" title="${note.pinned ? 'Unpin' : 'Pin'}">
-        📌
-      </div>
+    <div class="note-card">
       <div class="note-title">${escapeHtml(note.title)}</div>
       <div class="note-content">${escapeHtml(note.content)}</div>
       ${note.tags.length ? `
@@ -186,7 +151,6 @@ function createNoteCard(note) {
 function openForm() {
   addHeader.style.display = 'none';
   form.classList.add('active');
-  isFormOpen = true;
   titleInput.focus();
 }
 
@@ -195,7 +159,6 @@ function closeForm() {
   addHeader.style.display = 'block';
   form.classList.remove('active');
   form.reset();
-  isFormOpen = false;
   editingId = null;
   submitBtn.textContent = 'Save';
 }
@@ -265,7 +228,6 @@ form.addEventListener('submit', (e) => {
       title,
       content,
       tags,
-      pinned: false,
       createdAt: Date.now()
     });
     showMessage('Note saved');

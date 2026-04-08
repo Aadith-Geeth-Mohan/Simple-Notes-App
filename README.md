@@ -13,7 +13,6 @@
 | **Add Notes** | Create notes with title, content, and optional tags |
 | **Edit Notes** | Modify existing notes |
 | **Delete Notes** | Remove notes with confirmation |
-| **Pin Notes** | Pin important notes to top |
 | **Search** | Filter notes by title or content |
 | **Tags** | Categorize notes with colored labels |
 | **Persistence** | Notes saved to localStorage |
@@ -34,19 +33,18 @@ No build tools, no dependencies, no server required.
 ├── styles.css         # All CSS styling
 ├── script.js          # JavaScript logic
 ├── documentation.html # Project documentation
-└── SPEC.md            # This file
+└── README.md          # This file
 ```
 
 ## Data Model
 
 ```javascript
 {
-  id: Number,        // Unix timestamp
-  title: String,     // Note title (required)
-  content: String,   // Note body (required)
-  tags: String[],    // Array of tag strings
-  pinned: Boolean,   // Whether note is pinned
-  createdAt: Number  // Unix timestamp
+  id: Number,       // Unix timestamp
+  title: String,    // Note title (required)
+  content: String,  // Note body (required)
+  tags: String[],   // Array of tag strings
+  createdAt: Number // Unix timestamp
 }
 ```
 
@@ -55,12 +53,11 @@ No build tools, no dependencies, no server required.
 - Maximum **20 notes** per app
 - Title and content **cannot be empty**
 - Tags are **comma-separated** (e.g., `work, important, ideas`)
-- Pinned notes always appear at the **top**
+- Notes sorted by **newest first**
 
 ## Design
 
 - **Google Keep-inspired** card-based layout
-- **Yellow accent** for pinned notes indicator
 - **Responsive grid** adapts to screen size
 - **Sticky header** with search bar
 
